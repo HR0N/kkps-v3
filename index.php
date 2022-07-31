@@ -1,2 +1,4 @@
 <?php
-include('tg-bot.php');
+include 'parsing.php';
+
+parse_order();
