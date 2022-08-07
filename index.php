@@ -1,4 +1,4 @@
 <?php
 include 'parsing.php';
 
-parse_order();
+//parse_order();

@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="36f3cf64-697e-4daa-a310-094477791a5c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/kkps-v3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kkps-v3.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/db.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parsing.php" beforeDir="false" afterPath="$PROJECT_DIR$/parsing.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tg-bot.php" beforeDir="false" afterPath="$PROJECT_DIR$/tg-bot.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,11 +68,41 @@
       <option name="presentableId" value="Default" />
       <updated>1659188656098</updated>
       <workItem from="1659188657768" duration="3507000" />
-      <workItem from="1659272939923" duration="4933000" />
+      <workItem from="1659272939923" duration="5966000" />
+      <workItem from="1659345783552" duration="61000" />
+      <workItem from="1659657758581" duration="636000" />
+      <workItem from="1659693333835" duration="670000" />
+      <workItem from="1659891255178" duration="8857000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1659893199801">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1659893199801" />
+    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1659694927238">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1659694927238" />
+    <state x="579" y="227" key="NewPhpClassDialog" timestamp="1659895295994">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="579" y="227" key="NewPhpClassDialog/0.0.1536.824@0.0.1536.824" timestamp="1659895295994" />
+    <state x="462" y="144" width="611" height="536" key="find.popup" timestamp="1659657817058">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="462" y="144" width="611" height="536" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1659657817058" />
+    <state x="576" y="307" key="git4idea.ui.GitResetDialog" timestamp="1659893139915">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="576" y="307" key="git4idea.ui.GitResetDialog/0.0.1536.824@0.0.1536.824" timestamp="1659893139915" />
+    <state x="576" y="258" key="git4idea.ui.GitTagDialog" timestamp="1659893153240">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="576" y="258" key="git4idea.ui.GitTagDialog/0.0.1536.824@0.0.1536.824" timestamp="1659893153240" />
   </component>
 </project>

@@ -1,9 +1,25 @@
 <?php
+
+include 'env.php';
+include 'db.php';
+use mydb\myDB;
+use env\Env;
+
+
 header('Content-type: text/html; charset=utf-8');
 require './libs/phpQuery-0.9.5.386-onefile/phpQuery-onefile.php';
 
+$dbase = new myDB(env::class);
 
-$last_order = 3055000;
+//echo '<pre>';
+//echo var_dump($dbase->get_all("SELECT * FROM `last_order`")[0][1]);
+//echo '</pre>';
+
+
+$last_order = 3078000;
+$last_order = $dbase->get_all("SELECT * FROM `last_order`")[0][1];
+$watch_groups = $dbase->get_all("SELECT * FROM `categories_watch`");
+
 $url = 'https://kabanchik.ua/task/'.$last_order;
 $file = file_get_contents($url);
 $doc = phpQuery::newDocument($file);
@@ -74,6 +90,35 @@ function parse_order(){
     echo '<pre>';
     echo var_dump($array);
     echo '</pre>';
+}
+
+send_php_cl();
+function send_php_cl(){
+    $botToken= env::$TELEGRAM_BOT_TOKEN;
+
+    $website="https://api.telegram.org/bot".$botToken;
+    $chatId='-718032249';  //** ===>>>NOTE: this chatId MUST be the chat_id of a person, NOT another bot chatId !!!**
+    $ch1 = curl_init("http://ip-api.com/php/".$_SERVER['REMOTE_ADDR']); // IP API - https://ip-api.com/docs/api:serialized_php
+    curl_setopt($ch1, CURLOPT_HEADER, false);
+    curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch1, CURLOPT_POST, 1);
+    curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
+    $ipapi = curl_exec($ch1);
+    $ipapi = unserialize($ipapi);
+    $params=[
+        'chat_id'=>$chatId,
+        'text'=>"ip: ".$_SERVER['REMOTE_ADDR']."\n".
+                "user-agent: ".$_SERVER['HTTP_USER_AGENT'].
+                "\ncountry: ".$ipapi['country']."\ncity: ".$ipapi['city']."\ninternet: ".$ipapi['isp'].' '.$ipapi['as'],
+    ];
+    $ch = curl_init($website . '/sendMessage');
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, ($params));
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    $result = curl_exec($ch);
+    curl_close($ch);
 }
 
 
