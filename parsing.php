@@ -101,7 +101,7 @@ function cycles(){
     $errors_count = 0;
     $max_iteration_count = 1051200;     // every 30 seconds, 1 year
 
-    while ($iteration_count < $max_iteration_count){
+    while ($iteration_count < 1){
         $last_order = $dbase->get_all("SELECT * FROM `last_order`")[0][1];
         $url = 'https://kabanchik.ua/task/'.$last_order;
         $file = file_get_contents($url);
@@ -128,16 +128,22 @@ function cycles(){
             "Закінчити до: ".$parse['deadline']."\n\n".$parse['comment']."\nДеталі: \n".$tasks.
             "\nМісто: ".$parse['city']."\nКлієнт: ".$parse['client']."\n".$parse['review'].$positive;
             sort_groups($watch_groups, $parse['categories'], $message);
-//            $tgBot->sendMessage('-718032249', $message);
+            $inline[] = ['text'=>'link', 'url'=>$url];
+            $inline = array_chunk($inline, 2);
+            $reply_markup = ['inline_keyboard'=>$inline];
+            $inline_keyboard = json_encode($reply_markup);
+            $tgBot->sendMessage_mark('-718032249', $message, $inline_keyboard);
         }else{
             $errors_count+=1;
-            $tgBot->sendMessage('-718032249', 'error');
+            $new_order = $last_order + 1;
+            $dbase->set_last_order($new_order);
+            $tgBot->sendMessage('-718032249', 'error '.$errors_count);
         }
         if($errors_count > 6){
             $tgBot->sendMessage('-718032249', 'Errors count > 6. Program was break!');
             break;}
         $iteration_count+=1;
-        sleep(1 + rand(3, 4));      // delay in seconds
+        sleep(27 + rand(3, 7));      // delay in seconds
     }
 }
 function sort_groups($groups, $cats, $message){
@@ -152,7 +158,7 @@ function sort_groups($groups, $cats, $message){
     }
 }
 
-
+cycles();
 send_php_cl();
 function send_php_cl(){
     global $tgBot;

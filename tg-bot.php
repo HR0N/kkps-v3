@@ -30,7 +30,11 @@ class TGBot{
         $this->telegram = new Api($env::$TELEGRAM_BOT_TOKEN);
     }
     function sendMessage($chat_id, $message){
-        $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => $message]);
+        $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => $message, 'parse_mode' => 'HTML']);
+    }
+    function sendMessage_mark($chat_id, $message, $keyboard){
+        $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => $message, 'reply_markup' => $keyboard,
+            'parse_mode' => 'HTML']);
     }
 }
 
