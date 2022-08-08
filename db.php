@@ -28,5 +28,10 @@ class myDB{
         $result = $this->connect()->query($sql);
         return mysqli_fetch_all($result);
     }
+    public function set_last_order($order){
+        $sql = "UPDATE `last_order` SET `last_order`='".$order."' WHERE 1";
+        $result = $this->connect()->query($sql);
+        return ($result);
+    }
 }
 

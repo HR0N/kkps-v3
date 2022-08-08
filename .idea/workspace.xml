@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="36f3cf64-697e-4daa-a310-094477791a5c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/db.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/env.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.php" beforeDir="false" afterPath="$PROJECT_DIR$/db.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parsing.php" beforeDir="false" afterPath="$PROJECT_DIR$/parsing.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tg-bot.php" beforeDir="false" afterPath="$PROJECT_DIR$/tg-bot.php" afterDir="false" />
@@ -72,7 +70,8 @@
       <workItem from="1659345783552" duration="61000" />
       <workItem from="1659657758581" duration="636000" />
       <workItem from="1659693333835" duration="670000" />
-      <workItem from="1659891255178" duration="8857000" />
+      <workItem from="1659891255178" duration="9319000" />
+      <workItem from="1659963262907" duration="9230000" />
     </task>
     <servers />
   </component>
@@ -104,5 +103,9 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="576" y="258" key="git4idea.ui.GitTagDialog/0.0.1536.824@0.0.1536.824" timestamp="1659893153240" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1659966708719">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1659966708719" />
   </component>
 </project>

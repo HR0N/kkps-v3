@@ -1,8 +1,11 @@
 <?php
 include('vendor/autoload.php');
 use Telegram\Bot\Api;
-include('env.php');
+include_once('env.php');
 use env\Env as env;
+
+
+$iteration_count = 0;
 
 $telegram = new Api(env::$TELEGRAM_BOT_TOKEN);
 $result = $telegram->getWebhookUpdates();
@@ -14,14 +17,32 @@ $first_name = $result['message']['from']['first_name'];
 $last_name = $result['message']['from']['last_name'];
 
 
-if($text == '/start'){
-    $reply = "Hello world!";
+class TGBot{
+    public $telegram;
+    public $result;
+    public $text;
+    public $chat_id;
+    public $name;
+    public $first_name;
+    public $last_name;
+    public function __construct($env)
+    {
+        $this->telegram = new Api($env::$TELEGRAM_BOT_TOKEN);
+    }
+    function sendMessage($chat_id, $message){
+        $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => $message]);
+    }
+}
+
+if($text == 'status'){
+    $reply = "Итераций: ".$iteration_count."\nРаботает: вроде да.";
     $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
 }
-if($text == 'test'){
-    $reply = "Hmm, hello!";
-    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
-}
+
+//if($text == 'start'){
+//    $reply = "Hello world!";
+//    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
+//}
 
 // composer require irazasyed/telegram-bot-sdk ^2.0
 //$ composer require vlucas/phpdotenv
