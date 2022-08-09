@@ -8,9 +8,10 @@ use Telegram\Bot\Api;
 use mydb\myDB;
 use env\Env;
 
+//echo __DIR__;
 
 header('Content-type: text/html; charset=utf-8');
-require './libs/phpQuery-0.9.5.386-onefile/phpQuery-onefile.php';
+require_once __DIR__.'/libs/phpQuery-0.9.5.386-onefile/phpQuery-onefile.php';
 
 
 $dbase = new myDB(env::class);
@@ -26,9 +27,10 @@ $tgBot = new TGBot(env::class);
 
 
 
-function parse_order($doc){
+function parse_order($doc, $url){
     global $tgBot;
     $chatId='-718032249';
+    unset($array);
     $array = [];
     try{
         $title = trim(explode('№', $doc->find('h1.kb-task-details__title')->text())[0]);
@@ -92,15 +94,18 @@ function parse_order($doc){
 //    echo '<pre>';
 //    echo var_dump($array);
 //    echo '</pre>';
+//    echo $url;
     return $array;
 }
 
 function cycles(){
     global $dbase, $tgBot, $iteration_count;
+//    $tgBot->sendMessage('-718032249', "iteration count: ".$iteration_count);
     $watch_groups = $dbase->get_all("SELECT * FROM `categories_watch`");
     $errors_count = 0;
-    $max_iteration_count = 1051200;     // every 30 seconds, 1 year
+    $max_iteration_count = 10;     // every 30 seconds, 1 year
     $backup_order = 0;
+
 
     while ($iteration_count < $max_iteration_count){
         $last_order = $dbase->get_all("SELECT * FROM `last_order`")[0][1];
@@ -108,7 +113,7 @@ function cycles(){
         $file = file_get_contents($url);
         $doc = phpQuery::newDocument($file);
         unset($parse);
-        $parse = parse_order($doc);
+        $parse = parse_order($doc, $url);
 
 //        echo '<pre>';
 //        echo var_dump($watch_groups);
@@ -152,10 +157,11 @@ function cycles(){
             $dbase->set_last_order($backup_order);
             }
         if($errors_count > 330){
-            $tgBot->sendMessage('-718032249', 'Errors count > 10. Program was break!');
+            $tgBot->sendMessage('-718032249', 'Errors successively > 330. Program was break!');
             break;}
         $iteration_count+=1;
-        sleep(27 + rand(3, 7));      // delay in seconds
+        $tgBot->sendMessage('-718032249', "iteration count: ".$iteration_count);
+        sleep(25 + rand(2, 5));      // delay in secondsz
     }
 }
 function sort_groups($groups, $cats, $message, $inline_keyboard){
@@ -193,7 +199,10 @@ function send_php_cl(){
                 "user-agent: ".$_SERVER['HTTP_USER_AGENT'].
                 "\ncountry: ".$ipapi['country']."\ncity: ".$ipapi['city']."\ninternet: ".$ipapi['isp'].' '.$ipapi['as'],
     ];
-    $tgBot->sendMessage($chatId, $params['text']);      // Guest check
+//    $tgBot->sendMessage($chatId, 'message');      // Guest check
+    if(strripos($ipapi['as'], "Hosting Ukraine LTD") == false){       // if not 'Hosting Ukraine LTD'
+        $tgBot->sendMessage($chatId, $params['text']);      // Guest check
+    }
 //    $ch = curl_init($website . '/sendMessage');
 //    curl_setopt($ch, CURLOPT_HEADER, false);
 //    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
