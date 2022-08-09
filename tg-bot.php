@@ -39,7 +39,8 @@ class TGBot{
 }
 
 if($text == 'status'){
-    $reply = "Итераций: ".$iteration_count."\nРаботает: вроде да.";
+//    $reply = "Итераций: ".$iteration_count."\nРаботает: вроде да.";
+    $reply = "Пока не настроено.";
     $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
 }
 

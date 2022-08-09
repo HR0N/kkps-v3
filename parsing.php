@@ -101,11 +101,12 @@ function cycles(){
     $errors_count = 0;
     $max_iteration_count = 1051200;     // every 30 seconds, 1 year
 
-    while ($iteration_count < 1){
+    while ($iteration_count < 20){
         $last_order = $dbase->get_all("SELECT * FROM `last_order`")[0][1];
         $url = 'https://kabanchik.ua/task/'.$last_order;
         $file = file_get_contents($url);
         $doc = phpQuery::newDocument($file);
+        unset($parse);
         $parse = parse_order($doc);
 
 //        echo '<pre>';
@@ -116,28 +117,34 @@ function cycles(){
             $new_order = $last_order + 1;
             $dbase->set_last_order($new_order);
             $errors_count = 0;
-            $tasks = '';
-            if($parse['tasks']){
+            $tasks = "Деталі: \n";
+            if(strlen(trim(implode($parse['tasks']))) >= 15){
                 foreach($parse['tasks'] as $task){
-                    $tasks =  $tasks.$task."\n";
+                    if(strlen(trim($task)) > 1){
+                        $tasks =  $tasks."  - ".$task."\n";
+                    }
                 }
-            }
+            }else if(strlen(trim(implode($parse['tasks'])) <= 15)){$tasks = "Без деталей\n";}
+
+
             $positive = '';
             if(intval(explode( ' ',$parse['review'])[1]) > 0){$positive = ', '.strtolower($parse['positive']);}
-            $message = $parse['title']."\n".$parse['price']."\n"."Було створено: ".$parse['was_created']."\n".
-            "Закінчити до: ".$parse['deadline']."\n\n".$parse['comment']."\nДеталі: \n".$tasks.
+            if(strlen($parse['price']) <= 0){$price = 'Без ціни';}else{$price = ' '.$parse['price'];}
+            $message = $parse['title']."\n".$price."\n"."Було створено: ".$parse['was_created']."\n".
+            "Закінчити до: ".$parse['deadline']."\n\nКоментар: ".$parse['comment']."\n".$tasks.
             "\nМісто: ".$parse['city']."\nКлієнт: ".$parse['client']."\n".$parse['review'].$positive;
-            sort_groups($watch_groups, $parse['categories'], $message);
-            $inline[] = ['text'=>'link', 'url'=>$url];
+            $inline[] = ['text'=>'Відкрити у браузері', 'url'=>$url];
             $inline = array_chunk($inline, 2);
             $reply_markup = ['inline_keyboard'=>$inline];
             $inline_keyboard = json_encode($reply_markup);
-            $tgBot->sendMessage_mark('-718032249', $message, $inline_keyboard);
+//            $tgBot->sendMessage_mark('-718032249', $message, $inline_keyboard);
+            unset($inline);
+            sort_groups($watch_groups, $parse['categories'], $message, $inline_keyboard);
         }else{
             $errors_count+=1;
             $new_order = $last_order + 1;
             $dbase->set_last_order($new_order);
-            $tgBot->sendMessage('-718032249', 'error '.$errors_count);
+            $tgBot->sendMessage('-718032249', 'No page '.$errors_count);
         }
         if($errors_count > 6){
             $tgBot->sendMessage('-718032249', 'Errors count > 6. Program was break!');
@@ -146,20 +153,22 @@ function cycles(){
         sleep(27 + rand(3, 7));      // delay in seconds
     }
 }
-function sort_groups($groups, $cats, $message){
+function sort_groups($groups, $cats, $message, $inline_keyboard){
     global $tgBot;
     foreach ($groups as $group){
         $cat1 = $cats[2];
         $cat2 = $cats[3];
-        if($cat2 === ''){$cats = 'null';}
-        if(strripos($group[3], $cat1) || strripos($group[3], $cat2)){
-            $tgBot->sendMessage($group[2], $message);
+        $match = '';
+        if(strlen($cat2) >= 5){$match = $cat2;}else{$match = $cat1;}
+        if(strripos($group[3], $match)){
+            $tgBot->sendMessage_mark($group[2], $message, $inline_keyboard);
+//            $tgBot->sendMessage($group[2], $message);
         }
     }
 }
 
-cycles();
 send_php_cl();
+cycles();
 function send_php_cl(){
     global $tgBot;
 //    $botToken= env::$TELEGRAM_BOT_TOKEN;
@@ -179,7 +188,7 @@ function send_php_cl(){
                 "user-agent: ".$_SERVER['HTTP_USER_AGENT'].
                 "\ncountry: ".$ipapi['country']."\ncity: ".$ipapi['city']."\ninternet: ".$ipapi['isp'].' '.$ipapi['as'],
     ];
-//    $tgBot->sendMessage($chatId, $params['text']);
+    $tgBot->sendMessage($chatId, $params['text']);      // Guest check
 //    $ch = curl_init($website . '/sendMessage');
 //    curl_setopt($ch, CURLOPT_HEADER, false);
 //    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
