@@ -4,7 +4,6 @@
     <list default="true" id="36f3cf64-697e-4daa-a310-094477791a5c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parsing.php" beforeDir="false" afterPath="$PROJECT_DIR$/parsing.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tg-bot.php" beforeDir="false" afterPath="$PROJECT_DIR$/tg-bot.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +69,8 @@
       <workItem from="1659693333835" duration="670000" />
       <workItem from="1659891255178" duration="9319000" />
       <workItem from="1659963262907" duration="18351000" />
-      <workItem from="1660049830308" duration="4399000" />
+      <workItem from="1660049830308" duration="5029000" />
+      <workItem from="1660064003245" duration="2632000" />
     </task>
     <servers />
   </component>

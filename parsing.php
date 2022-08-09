@@ -100,8 +100,9 @@ function cycles(){
     $watch_groups = $dbase->get_all("SELECT * FROM `categories_watch`");
     $errors_count = 0;
     $max_iteration_count = 1051200;     // every 30 seconds, 1 year
+    $backup_order = 0;
 
-    while ($iteration_count < 20){
+    while ($iteration_count < $max_iteration_count){
         $last_order = $dbase->get_all("SELECT * FROM `last_order`")[0][1];
         $url = 'https://kabanchik.ua/task/'.$last_order;
         $file = file_get_contents($url);
@@ -141,13 +142,17 @@ function cycles(){
             unset($inline);
             sort_groups($watch_groups, $parse['categories'], $message, $inline_keyboard);
         }else{
+            if($errors_count == 0){$backup_order = $last_order;}
             $errors_count+=1;
             $new_order = $last_order + 1;
             $dbase->set_last_order($new_order);
             $tgBot->sendMessage('-718032249', 'No page '.$errors_count);
         }
-        if($errors_count > 6){
-            $tgBot->sendMessage('-718032249', 'Errors count > 6. Program was break!');
+        if($errors_count > 10){
+            $dbase->set_last_order($backup_order);
+            }
+        if($errors_count > 330){
+            $tgBot->sendMessage('-718032249', 'Errors count > 10. Program was break!');
             break;}
         $iteration_count+=1;
         sleep(27 + rand(3, 7));      // delay in seconds
