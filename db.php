@@ -33,5 +33,25 @@ class myDB{
         $result = $this->connect()->query($sql);
         return ($result);
     }
+    public function get_backup_order(){
+        $sql = "SELECT * FROM `backup_order` WHERE 1";
+        $result = $this->connect()->query($sql);
+        return mysqli_fetch_all($result);
+    }
+    public function get_errors_count(){
+        $sql = "SELECT * FROM `errors_count` WHERE 1";
+        $result = $this->connect()->query($sql);
+        return mysqli_fetch_all($result);
+    }
+    public function set_backup_order($order){
+        $sql = "UPDATE `backup_order` SET `backup_order`='".$order."' WHERE 1";
+        $result = $this->connect()->query($sql);
+        return ($result);
+    }
+    public function set_errors_count($errors_count){
+        $sql = "UPDATE `errors_count` SET `errors_count`='".$errors_count."' WHERE 1";
+        $result = $this->connect()->query($sql);
+        return ($result);
+    }
 }
 
