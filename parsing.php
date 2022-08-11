@@ -1,14 +1,14 @@
 <?php
 
-include 'env.php';
-include 'db.php';
-include 'tg-bot.php';
+include_once('env.php');
+include_once('db.php');
+include_once('tg-bot.php');
 include_once('vendor/autoload.php');
 use Telegram\Bot\Api;
 use mydb\myDB;
 use env\Env;
 
-//echo __DIR__;
+date_default_timezone_set('Europe/Kiev');
 
 header('Content-type: text/html; charset=utf-8');
 require_once __DIR__.'/libs/phpQuery-0.9.5.386-onefile/phpQuery-onefile.php';
@@ -165,6 +165,7 @@ function cycles(){
         $iteration_count+=1;
         $tgBot->sendMessage('-718032249', "iteration count: ".$iteration_count.
             "\nLast order: ".$last_order."\nErrors count: ".$errors_count."\nBackup order: ".$backup_order);
+        $dbase->set_last_iteration_timestamp(date('d.m.y - H:i'));
         sleep($delay + rand(2, 5));      // delay in secondsz
     }
 }

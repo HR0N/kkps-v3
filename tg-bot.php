@@ -1,13 +1,17 @@
 <?php
+
 include('vendor/autoload.php');
 use Telegram\Bot\Api;
 include_once('env.php');
+include_once('db.php');
 use env\Env as env;
+use mydb\myDB;
 
 
 $iteration_count = 0;
 
 $telegram = new Api(env::$TELEGRAM_BOT_TOKEN);
+$tgDbase = new myDB(env::class);
 $result = $telegram->getWebhookUpdates();
 
 $text = strtolower($result['message']['text']);
@@ -39,9 +43,9 @@ class TGBot{
 }
 
 if($text == 'status'){
-//    $reply = "Итераций: ".$iteration_count."\nРаботает: вроде да.";
-    $reply = "Пока не настроено.";
-    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply]);
+    [,$last_iteration] = $tgDbase->get_last_iteration_timestamp()[0];
+    $reply = "Last iteration was: <b>".$last_iteration."</b>";
+    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'parse_mode' => 'HTML']);
 }
 
 //if($text == 'start'){

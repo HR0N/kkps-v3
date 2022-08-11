@@ -35,5 +35,7 @@ echo '<pre>';
 echo var_dump($mydb->get_backup_order());
 echo '</pre>';
 
+echo "\n".date('d.m.y - H:i');
+
 $reply = 'test';
 //$telegram->sendMessage(['chat_id' => '-718032249', 'text' => $reply]);

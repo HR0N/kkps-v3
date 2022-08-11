@@ -53,5 +53,15 @@ class myDB{
         $result = $this->connect()->query($sql);
         return ($result);
     }
+    public function get_last_iteration_timestamp(){
+        $sql = "SELECT * FROM `last_iteration` WHERE 1";
+        $result = $this->connect()->query($sql);
+        return mysqli_fetch_all($result);
+    }
+    public function set_last_iteration_timestamp($timestamp){
+        $sql = "UPDATE `last_iteration` SET `timestamp`='".$timestamp."' WHERE 1";
+        $result = $this->connect()->query($sql);
+        return ($result);
+    }
 }
 
