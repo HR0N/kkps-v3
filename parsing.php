@@ -18,9 +18,6 @@ $dbase = new myDB(env::class);
 $tgBot = new TGBot(env::class);
 
 
-//echo '<pre>';
-//echo var_dump($dbase->get_all("SELECT * FROM `last_order`")[0][1]);
-//echo '</pre>';
 
 
 
