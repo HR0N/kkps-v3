@@ -63,5 +63,15 @@ class myDB{
         $result = $this->connect()->query($sql);
         return ($result);
     }
+    public function get_dropped_errors(){
+        $sql = "SELECT * FROM `drop_errors` WHERE 1";
+        $result = $this->connect()->query($sql);
+        return mysqli_fetch_all($result);
+    }
+    public function set_dropped_errors($timestamp){
+        $sql = "UPDATE `drop_errors` SET `errors_count`='".$timestamp."' WHERE 1";
+        $result = $this->connect()->query($sql);
+        return ($result);
+    }
 }
 

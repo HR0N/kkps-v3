@@ -100,6 +100,7 @@ function cycles(){
     [,$errors_count] = $dbase->get_errors_count()[0];
     $max_iteration_count = 20;     // every 30 seconds, 1 year
     [,$backup_order] = $dbase->get_backup_order()[0];
+    [,$dropped_errors] = $dbase->get_dropped_errors()[0];
     $delay = 25;
 
 
@@ -121,6 +122,7 @@ function cycles(){
             $dbase->set_last_order($new_order);
             $errors_count = 0;
             $dbase->set_errors_count($errors_count);
+            $dbase->set_dropped_errors(0);
             $tasks = "Деталі: \n";
             if(strlen(trim(implode($parse['tasks']))) >= 15){
                 foreach($parse['tasks'] as $task){
@@ -158,8 +160,10 @@ function cycles(){
         }
         if($errors_count > 10){
             $dbase->set_last_order($backup_order);
+            $dbase->set_errors_count(0);
+            $dbase->set_dropped_errors($dropped_errors + 1);
             }
-        if($errors_count > 330){
+        if($dropped_errors > 33){
             $tgBot->sendMessage('-718032249', 'Errors successively > 330. Program was break!');
             break;}
         $iteration_count+=1;
