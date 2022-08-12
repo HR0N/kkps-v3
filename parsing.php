@@ -98,7 +98,7 @@ function cycles(){
 //    $tgBot->sendMessage('-718032249', "iteration count: ".$iteration_count);
     $watch_groups = $dbase->get_all("SELECT * FROM `categories_watch`");
     [,$errors_count] = $dbase->get_errors_count()[0];
-    $max_iteration_count = 10;     // every 30 seconds, 1 year
+    $max_iteration_count = 20;     // every 30 seconds, 1 year
     [,$backup_order] = $dbase->get_backup_order()[0];
     $delay = 25;
 
@@ -116,7 +116,7 @@ function cycles(){
 //        echo '</pre>';
 
         if(isset($parse['title']) && strlen($parse['title'] > 0)){     // if page has order and parsed correct
-            $delay = 25;
+            $delay = 10;
             $new_order = $last_order + 1;
             $dbase->set_last_order($new_order);
             $errors_count = 0;
@@ -166,7 +166,7 @@ function cycles(){
         $tgBot->sendMessage('-718032249', "iteration count: ".$iteration_count.
             "\nLast order: ".$last_order."\nErrors count: ".$errors_count."\nBackup order: ".$backup_order);
         $dbase->set_last_iteration_timestamp(date('d.m.y - H:i'));
-        sleep($delay + rand(2, 5));      // delay in secondsz
+        sleep($delay + rand(1, 4));      // delay in secondsz
     }
 }
 function sort_groups($groups, $cats, $message, $inline_keyboard){
