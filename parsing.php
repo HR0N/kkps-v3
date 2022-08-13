@@ -98,10 +98,13 @@ function cycles(){
 //    $tgBot->sendMessage('-718032249', "iteration count: ".$iteration_count);
     $watch_groups = $dbase->get_all("SELECT * FROM `categories_watch`");
     [,$errors_count] = $dbase->get_errors_count()[0];
-    $max_iteration_count = 20;     // every 30 seconds, 1 year
     [,$backup_order] = $dbase->get_backup_order()[0];
     [,$dropped_errors] = $dbase->get_dropped_errors()[0];
-    $delay = 25;
+    $hour_now = intval(date('H'));
+    if($hour_now < 6){
+        $max_iteration_count = 5;
+    }else{$max_iteration_count = 20;}
+    $delay = 10;
 
 
     while ($iteration_count < $max_iteration_count){
@@ -116,8 +119,13 @@ function cycles(){
 //        echo var_dump($watch_groups);
 //        echo '</pre>';
 
+        if($dropped_errors > 33){
+            $tgBot->sendMessage('-718032249', 'Errors successively > 330. Program was break!');
+            break;}
         if(isset($parse['title']) && strlen($parse['title'] > 0)){     // if page has order and parsed correct
-            $delay = 10;
+            if($hour_now < 6){
+                $delay = 50;
+            }else{$delay = 10;}
             $new_order = $last_order + 1;
             $dbase->set_last_order($new_order);
             $errors_count = 0;
@@ -147,7 +155,9 @@ function cycles(){
             unset($inline);
             sort_groups($watch_groups, $parse['categories'], $message, $inline_keyboard);
         }else{
-            $delay = 5;
+            if($hour_now < 6){
+                $delay = 50;
+            }else{$delay = 10;}
             if($errors_count == 0){
                 $backup_order = $last_order;
                 $dbase->set_backup_order($backup_order);
@@ -160,17 +170,16 @@ function cycles(){
         }
         if($errors_count > 10){
             $dbase->set_last_order($backup_order);
-            $dbase->set_errors_count(0);
-            $dbase->set_dropped_errors($dropped_errors + 1);
+            $errors_count = 0;
+            $dbase->set_errors_count($errors_count);
+            $dropped_errors+=1;
+            $dbase->set_dropped_errors($dropped_errors);
             }
-        if($dropped_errors > 33){
-            $tgBot->sendMessage('-718032249', 'Errors successively > 330. Program was break!');
-            break;}
         $iteration_count+=1;
         $tgBot->sendMessage('-718032249', "iteration count: ".$iteration_count.
             "\nLast order: ".$last_order."\nErrors count: ".$errors_count."\nBackup order: ".$backup_order);
         $dbase->set_last_iteration_timestamp(date('d.m.y - H:i'));
-        sleep($delay + rand(1, 4));      // delay in secondsz
+        sleep($delay + rand(1, 4));      // delay in seconds
     }
 }
 function sort_groups($groups, $cats, $message, $inline_keyboard){

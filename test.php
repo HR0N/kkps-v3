@@ -36,6 +36,7 @@ echo var_dump($mydb->get_backup_order());
 echo '</pre>';
 
 echo "\n".date('d.m.y - H:i');
+echo "\ndate: ".gettype(intval(date('H')));
 
 $reply = 'test';
 //$telegram->sendMessage(['chat_id' => '-718032249', 'text' => $reply]);
