@@ -44,7 +44,16 @@ class TGBot{
 
 if($text == 'status'){
     [,$last_iteration] = $tgDbase->get_last_iteration_timestamp()[0];
-    $reply = "Last iteration was: <b>".$last_iteration."</b>";
+    [,$dropped_errors] = $tgDbase->get_dropped_errors()[0];
+    $reply = "Last iteration was: ".$last_iteration."\nDropped errors: ".$dropped_errors;
+    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'parse_mode' => 'HTML']);
+}
+if($text == '/start_report'){
+    $reply = "Last iteration was: ";
+    $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'parse_mode' => 'HTML']);
+}
+if($text == '/stop_report'){
+    $reply = "Last iteration was: ";
     $telegram->sendMessage(['chat_id' => $chat_id, 'text' => $reply, 'parse_mode' => 'HTML']);
 }
 

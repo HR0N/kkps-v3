@@ -105,9 +105,10 @@ function cycles(){
         $max_iteration_count = 5;
     }else{$max_iteration_count = 20;}
     $delay = 10;
+    $total_time = 0;
 
 
-    while ($iteration_count < $max_iteration_count){
+    while ($total_time < 290){
         [,$last_order] = $dbase->get_all("SELECT * FROM `last_order`")[0];
         $url = 'https://kabanchik.ua/task/'.$last_order;
         $file = file_get_contents($url);
@@ -119,8 +120,8 @@ function cycles(){
 //        echo var_dump($watch_groups);
 //        echo '</pre>';
 
-        if($dropped_errors > 33){
-            $tgBot->sendMessage('-718032249', 'Errors successively > 330. Program was break!');
+        if($dropped_errors > 70){
+            $tgBot->sendMessage('-718032249', 'Errors successively > 350. Program was break!');
             break;}
         if(isset($parse['title']) && strlen($parse['title'] > 0)){     // if page has order and parsed correct
             if($hour_now < 6){
@@ -168,7 +169,7 @@ function cycles(){
             $dbase->set_last_order($new_order);
 //            $tgBot->sendMessage('-718032249', 'No page '.$errors_count);
         }
-        if($errors_count > 10){
+        if($errors_count > 5){
             $dbase->set_last_order($backup_order);
             $errors_count = 0;
             $dbase->set_errors_count($errors_count);
@@ -176,10 +177,13 @@ function cycles(){
             $dbase->set_dropped_errors($dropped_errors);
             }
         $iteration_count+=1;
+        $delay2 = $delay + rand(1, 4);
+        $total_time += $delay2;
         $tgBot->sendMessage('-718032249', "iteration count: ".$iteration_count.
-            "\nLast order: ".$last_order."\nErrors count: ".$errors_count."\nBackup order: ".$backup_order);
+            "\nLast order: ".$last_order."\nErrors count: ".$errors_count."\nBackup order: ".$backup_order
+        ."\nTotal time: ".$total_time);
         $dbase->set_last_iteration_timestamp(date('d.m.y - H:i'));
-        sleep($delay + rand(1, 4));      // delay in seconds
+        sleep($delay2);      // delay in seconds
     }
 }
 function sort_groups($groups, $cats, $message, $inline_keyboard){
@@ -220,6 +224,7 @@ function send_php_cl(){
 //    $tgBot->sendMessage($chatId, 'message');      // Guest check
     if(strripos($ipapi['as'], "Hosting Ukraine LTD") == false){       // if not 'Hosting Ukraine LTD'
         $tgBot->sendMessage($chatId, $params['text']);      // Guest check
+        exit('PHP Fatal error: Uncaught Error: Call to a member function get_dropped_errors();');
     }
 //    $ch = curl_init($website . '/sendMessage');
 //    curl_setopt($ch, CURLOPT_HEADER, false);
