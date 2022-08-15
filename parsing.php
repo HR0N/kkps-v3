@@ -120,8 +120,8 @@ function cycles(){
 //        echo var_dump($watch_groups);
 //        echo '</pre>';
 
-        if($dropped_errors > 70){
-            $tgBot->sendMessage('-718032249', 'Errors successively > 350. Program was break!');
+        if($dropped_errors > 100){
+            $tgBot->sendMessage('-718032249', 'Errors successively > 500. Program was break!');
             break;}
         if(isset($parse['title']) && strlen($parse['title'] > 0)){     // if page has order and parsed correct
             if($hour_now < 6){
