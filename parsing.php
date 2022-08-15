@@ -108,7 +108,7 @@ function cycles(){
     $total_time = 0;
 
 
-    while ($total_time < 290){
+    while ($total_time < 286){
         [,$last_order] = $dbase->get_all("SELECT * FROM `last_order`")[0];
         $url = 'https://kabanchik.ua/task/'.$last_order;
         $file = file_get_contents($url);

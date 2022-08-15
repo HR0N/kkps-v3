@@ -65,4 +65,4 @@ if($text == '/stop_report'){
 // composer require irazasyed/telegram-bot-sdk ^2.0
 //$ composer require vlucas/phpdotenv
 //https://api.telegram.org/bot5591524736:AAGXk3kxgnGrjpIeMvhMM_toBda5NQVTLnQ/setWebHook?url=
-//https://kabanchik-bot.evilcode.space/tg-bot.php
+//https://kkpsv3.evilcode.space/tg-bot.php
