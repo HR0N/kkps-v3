@@ -104,11 +104,13 @@ function cycles(){
     if($hour_now < 6){
         $max_iteration_count = 5;
     }else{$max_iteration_count = 20;}
-    $delay = 10;
-    $total_time = 0;
+    if($hour_now < 6){
+        $delay = 50;
+    }else{$delay = 10;}
+//    $total_time = 0;
 
 
-    while ($total_time < 276){
+    while (total_sec_in_each_five_min() < (295 - $delay*2)){
         [,$last_order] = $dbase->get_all("SELECT * FROM `last_order`")[0];
         $url = 'https://kabanchik.ua/task/'.$last_order;
         $file = file_get_contents($url);
@@ -124,9 +126,6 @@ function cycles(){
             $tgBot->sendMessage('-718032249', 'Errors successively > 500. Program was break!');
             break;}
         if(isset($parse['title']) && strlen($parse['title'] > 0)){     // if page has order and parsed correct
-            if($hour_now < 6){
-                $delay = 50;
-            }else{$delay = 10;}
             $new_order = $last_order + 1;
             $dbase->set_last_order($new_order);
             $errors_count = 0;
@@ -156,9 +155,6 @@ function cycles(){
             unset($inline);
             sort_groups($watch_groups, $parse['categories'], $message, $inline_keyboard);
         }else{
-            if($hour_now < 6){
-                $delay = 50;
-            }else{$delay = 10;}
             if($errors_count == 0){
                 $backup_order = $last_order;
                 $dbase->set_backup_order($backup_order);
@@ -178,10 +174,10 @@ function cycles(){
             }
         $iteration_count+=1;
         $delay2 = $delay + rand(1, 4);
-        $total_time += $delay2;
+//        $total_time += $delay2;
         $tgBot->sendMessage('-718032249', "iteration count: ".$iteration_count.
             "\nLast order: ".$last_order."\nErrors count: ".$errors_count."\nBackup order: ".$backup_order
-        ."\nTotal time: ".$total_time);
+        ."\nTotal sec: ".total_sec_in_each_five_min());
         $dbase->set_last_iteration_timestamp(date('d.m.y - H:i'));
         sleep($delay2);      // delay in seconds
     }
@@ -198,6 +194,12 @@ function sort_groups($groups, $cats, $message, $inline_keyboard){
 //            $tgBot->sendMessage($group[2], $message);
         }
     }
+}
+function total_sec_in_each_five_min(){
+    $min = intval(mb_substr(date('i'), 1));
+    if($min >= 5){$min-=5;}
+    $sec = intval(date('s'));
+    return $min * 60 + $sec;
 }
 
 send_php_cl();

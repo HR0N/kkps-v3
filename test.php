@@ -23,20 +23,17 @@ $last_name = $result['message']['from']['last_name'];
 [,$res] = $mydb->get_errors_count()[0];
 [,$res2] = $mydb->get_backup_order()[0];
 
-echo $res;
-echo "\n";
-echo $res2;
-echo "\n";
+function separate_time(){
+    $min = intval(mb_substr(date('i'), 1));
+    if($min >= 5){$min-=5;}
+    $sec = intval(date('s'));
+    return $min * 60 + $sec;
+}
 
-echo '<pre>';
-echo var_dump($mydb->get_errors_count());
-echo '</pre>';
-echo '<pre>';
-echo var_dump($mydb->get_backup_order());
-echo '</pre>';
+echo separate_time();
 
-echo "\n".date('d.m.y - H:i');
-echo "\ndate: ".gettype(intval(date('H')));
+
+//echo "\n".date('d.m.y - H:i');
 
 
 $reply = 'test';
