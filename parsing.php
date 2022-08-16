@@ -95,22 +95,17 @@ function parse_order($doc, $url){
 
 function cycles(){
     global $dbase, $tgBot, $iteration_count;
-//    $tgBot->sendMessage('-718032249', "iteration count: ".$iteration_count);
     $watch_groups = $dbase->get_all("SELECT * FROM `categories_watch`");
     [,$errors_count] = $dbase->get_errors_count()[0];
     [,$backup_order] = $dbase->get_backup_order()[0];
     [,$dropped_errors] = $dbase->get_dropped_errors()[0];
     $hour_now = intval(date('H'));
     if($hour_now < 6){
-        $max_iteration_count = 5;
-    }else{$max_iteration_count = 20;}
-    if($hour_now < 6){
         $delay = 50;
     }else{$delay = 10;}
-//    $total_time = 0;
 
 
-    while (total_sec_in_each_five_min() < (295 - $delay*2)){
+    while (total_sec_in_each_five_min() < (295 - $delay)){
         [,$last_order] = $dbase->get_all("SELECT * FROM `last_order`")[0];
         $url = 'https://kabanchik.ua/task/'.$last_order;
         $file = file_get_contents($url);
@@ -118,9 +113,6 @@ function cycles(){
         unset($parse);
         $parse = parse_order($doc, $url);
 
-//        echo '<pre>';
-//        echo var_dump($watch_groups);
-//        echo '</pre>';
 
         if($dropped_errors > 100){
             $tgBot->sendMessage('-718032249', 'Errors successively > 500. Program was break!');
@@ -151,7 +143,6 @@ function cycles(){
             $inline = array_chunk($inline, 2);
             $reply_markup = ['inline_keyboard'=>$inline];
             $inline_keyboard = json_encode($reply_markup);
-//            $tgBot->sendMessage_mark('-718032249', $message, $inline_keyboard);
             unset($inline);
             sort_groups($watch_groups, $parse['categories'], $message, $inline_keyboard);
         }else{
@@ -163,7 +154,6 @@ function cycles(){
             $dbase->set_errors_count($errors_count);
             $new_order = $last_order + 1;
             $dbase->set_last_order($new_order);
-//            $tgBot->sendMessage('-718032249', 'No page '.$errors_count);
         }
         if($errors_count > 5){
             $dbase->set_last_order($backup_order);
@@ -174,7 +164,6 @@ function cycles(){
             }
         $iteration_count+=1;
         $delay2 = $delay + rand(1, 4);
-//        $total_time += $delay2;
         $tgBot->sendMessage('-718032249', "iteration count: ".$iteration_count.
             "\nLast order: ".$last_order."\nErrors count: ".$errors_count."\nBackup order: ".$backup_order
         ."\nTotal sec: ".total_sec_in_each_five_min());
