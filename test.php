@@ -10,7 +10,7 @@ use mydb\myDB;
 $iteration_count = 0;
 
 $telegram = new Api(env::$TELEGRAM_BOT_TOKEN);
-$mydb = new myDB(env::class);
+$dbase = new myDB(env::class);
 
 $result = $telegram->getWebhookUpdates();
 
@@ -20,18 +20,11 @@ $name = $result['message']['from']['username'];
 $first_name = $result['message']['from']['first_name'];
 $last_name = $result['message']['from']['last_name'];
 
-[,$res] = $mydb->get_errors_count()[0];
-[,$res2] = $mydb->get_backup_order()[0];
+$watch_groups = $dbase->get_all("SELECT * FROM `categories_watch`");
 
-function separate_time(){
-    $min = intval(mb_substr(date('i'), 1));
-    if($min >= 5){$min-=5;}
-    $sec = intval(date('s'));
-    return $min * 60 + $sec;
-}
-
-echo separate_time();
-
+echo '<pre>';
+echo var_dump($watch_groups);
+echo '</pre>';
 
 //echo "\n".date('d.m.y - H:i');
 

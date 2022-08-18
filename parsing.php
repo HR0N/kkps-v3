@@ -144,7 +144,8 @@ function cycles(){
             $reply_markup = ['inline_keyboard'=>$inline];
             $inline_keyboard = json_encode($reply_markup);
             unset($inline);
-            sort_groups($watch_groups, $parse['categories'], $message, $inline_keyboard);
+//            $tgBot->sendMessage_mark('-718032249', $message, $inline_keyboard);
+            sort_groups($watch_groups, $parse['categories'], $parse['city'], $message, $inline_keyboard);
         }else{
             if($errors_count == 0){
                 $backup_order = $last_order;
@@ -171,16 +172,18 @@ function cycles(){
         sleep($delay2);      // delay in seconds
     }
 }
-function sort_groups($groups, $cats, $message, $inline_keyboard){
+function sort_groups($groups, $cats, $city, $message, $inline_keyboard){
     global $tgBot;
     foreach ($groups as $group){
         $cat1 = $cats[2];
         $cat2 = $cats[3];
-        $match = '';
         if(strlen($cat2) >= 5){$match = $cat2;}else{$match = $cat1;}
         if(strripos($group[3], $match)){
-            $tgBot->sendMessage_mark($group[2], $message, $inline_keyboard);
-//            $tgBot->sendMessage($group[2], $message);
+            if($group[4] == 'all'){   // sort by cities
+                $tgBot->sendMessage_mark($group[2], $message, $inline_keyboard);
+            }else if(isset($city) && strripos($group[4], $city)){
+                $tgBot->sendMessage_mark($group[2], $message, $inline_keyboard);
+            }
         }
     }
 }
