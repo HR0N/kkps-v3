@@ -135,7 +135,7 @@ function cycles(){
 
             $positive = '';
             if(intval(explode( ' ',$parse['review'])[1]) > 0){$positive = ', '.strtolower($parse['positive']);}
-            if(strlen($parse['price']) <= 0){$price = 'Без ціни';}else{$price = ' '.$parse['price'];}
+            if(strlen($parse['price']) <= 0){$price = 'Без ціни';}else{$price = $parse['price'];}
             $message = $parse['title']."\n".$price."\n"."Було створено: ".$parse['was_created']."\n".
             "Закінчити до: ".$parse['deadline']."\n\nКоментар: ".$parse['comment']."\n".$tasks.
             "\nМісто: ".$parse['city']."\nКлієнт: ".$parse['client']."\n".$parse['review'].$positive;
