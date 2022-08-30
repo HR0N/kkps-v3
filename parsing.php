@@ -179,9 +179,9 @@ function sort_groups($groups, $cats, $city, $message, $inline_keyboard){
         $cat2 = $cats[3];
         if(strlen($cat2) >= 5){$match = $cat2;}else{$match = $cat1;}
         if(strripos($group[3], $match)){
-            if($group[4] == 'all'){   // sort by cities
+            if($group[4] == 'all'){
                 $tgBot->sendMessage_mark($group[2], $message, $inline_keyboard);
-            }else if(isset($city) && strripos($group[4], $city)){
+            }else if(isset($city) && strlen($city) > 1 && strripos($group[4], $city)){   // sort by cities
                 $tgBot->sendMessage_mark($group[2], $message, $inline_keyboard);
             }
         }
