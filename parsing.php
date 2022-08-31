@@ -86,10 +86,7 @@ function parse_order($doc, $url){
         $array['categories'] = $categories;
     }catch (Exception $e) {$tgBot->sendMessage($chatId, 'Categories исключение: '.$e->getMessage()."\n");}
 
-//    echo '<pre>';
-//    echo var_dump($array);
-//    echo '</pre>';
-//    echo $url;
+
     return $array;
 }
 
