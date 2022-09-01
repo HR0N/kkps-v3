@@ -97,6 +97,7 @@ function cycles(){
     [,$backup_order] = $dbase->get_backup_order()[0];
     [,$dropped_errors] = $dbase->get_dropped_errors()[0];
     $hour_now = intval(date('H'));
+    $current_order_was_create = 'null';
     if($hour_now < 6){
         $delay = 50;
     }else{$delay = 10;}
@@ -133,6 +134,8 @@ function cycles(){
             $positive = '';
             if(intval(explode( ' ',$parse['review'])[1]) > 0){$positive = ', '.strtolower($parse['positive']);}
             if(strlen($parse['price']) <= 0){$price = 'Без ціни';}else{$price = $parse['price'];}
+            if(isset($parse['was_created']) && strlen($parse['was_created']) > 2){$current_order_was_create = $parse['was_created'];}
+            else{$current_order_was_create = 'null';}
             $message = $parse['title']."\n".$price."\n"."Було створено: ".$parse['was_created']."\n".
             "Закінчити до: ".$parse['deadline']."\n\nКоментар: ".$parse['comment']."\n".$tasks.
             "\nМісто: ".$parse['city']."\nКлієнт: ".$parse['client']."\n".$parse['review'].$positive;
@@ -144,6 +147,7 @@ function cycles(){
 //            $tgBot->sendMessage_mark('-718032249', $message, $inline_keyboard);
             sort_groups($watch_groups, $parse['categories'], $parse['city'], $message, $inline_keyboard);
         }else{
+            $current_order_was_create = 'null';
             if($errors_count == 0){
                 $backup_order = $last_order;
                 $dbase->set_backup_order($backup_order);
@@ -162,9 +166,9 @@ function cycles(){
             }
         $iteration_count+=1;
         $delay2 = $delay + rand(1, 4);
-        $tgBot->sendMessage('-718032249', "iteration count: ".$iteration_count.
+        /*$tgBot->sendMessage('-718032249', "iteration count: ".$iteration_count.
             "\nLast order: ".$last_order."\nErrors count: ".$errors_count."\nBackup order: ".$backup_order
-        ."\nTotal sec: ".total_sec_in_each_five_min());
+        ."\nTotal sec: ".total_sec_in_each_five_min()."\nCur ord.time: ".$current_order_was_create);*/
         $dbase->set_last_iteration_timestamp(date('d.m.y - H:i'));
         sleep($delay2);      // delay in seconds
     }
